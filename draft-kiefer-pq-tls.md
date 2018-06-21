@@ -2,7 +2,7 @@
 title: Post-Quantum key-exchange in TLS
 abbrev: pq-tls
 docname: draft-kiefer-pq-tls-latest
-category: Experimental
+category: exp
 
 ipr: trust200902
 area: IRTF
