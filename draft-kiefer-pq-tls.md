@@ -82,17 +82,35 @@ The handshake messages also get larger because the SIDH values are added.
 
 ## Notation
 
+TODO: describe necessary SIDH parameters.
 
 ## Terminology
 RFC 2119 {{RFC2119}} defines the terms MUST, SHOULD, and MAY.
 
+# SIDH p751
+
+TODO: describe.
+
+# Negotiated Groups
+
+This document extends the enum of NamedGroups to use in the `supported_groups`
+extension from TLS 1.3 {{TLS13}} Section 4.2.7.
+The new codepoint for the "Supported Groups Registry" is:
+
+    enum {
+    // other already defined elliptic curves (see TLS1.3 RFC)
+        ecdhesidh751(0x0105),
+    //
+    } NamedGroup;
+
+TODO: describe parameters.
 
 # ECDHE-SIDH key exchange parameters
 
 This document defines ECDHE-SIDH parameters to use in the `key_share` extension
-from TLS 1.3 {{TLS13}} section 4.2.8.
+from TLS 1.3 {{TLS13}} Section 4.2.8.
 ECDHE parameters for both clients and servers are encoded in the key_exchange
-field of a KeyShareEntry as described in {{TLS13}} section 4.2.8 and
+field of a KeyShareEntry as described in {{TLS13}} Section 4.2.8 and
 {{RFC7748}} described.
 
 In particular, for secp256r1, secp384r1 and secp521r1, the contents are the
@@ -107,7 +125,7 @@ serialised value of the following struct:
            opaque Q[sidh_coordinate_length];
        } UncompressedPointRepresentation;
 
-X and Y are as described in {{TLS13}} section 4.2.8
+X and Y are as described in {{TLS13}} Section 4.2.8
 For X25519 and X448 the contents are the serialised value of the following
 struct:
 
@@ -124,8 +142,21 @@ SIDH key values in network byte order.
 TODO: how long is that?
 TODO: SIDH key validation
 
+# ECDHE-SIDH Shared Secret Calculation
+
+The ECDHE and SIDH shared secrets are calculated independently.
+The shared secret for ECDHE-SIDH is then the concatenation of the ECDHE and the SIDH shared secrets.
+
+## ECDHE shared secret calculation
+The ECDHE shared secret calculation is performed as described in {{TLS13}} Section 7.4.2.
+
+## SIDH shared secret calculation
+The SIDH shared secret is calculated as described in {{eSIDH}} Section 6.
+TODO: describe.
+
 # Security Considerations
 
+TODO: This is at least as secure as the used ECDH.
 
 # IANA Considerations
 
