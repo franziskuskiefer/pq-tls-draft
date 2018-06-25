@@ -1,0 +1,280 @@
+
+
+
+
+Network Working Group                                          F. Kiefer
+Internet-Draft                                                   Mozilla
+Intended status: Experimental                              June 25, 2018
+Expires: December 27, 2018
+
+
+                    Post-Quantum key-exchange in TLS
+                       draft-kiefer-pq-tls-latest
+
+Abstract
+
+   To allow interopability testing of post-quantum key-exchange
+   algorithms this draft specifies a secure way to combine SIDH with
+   ECDHE in TLS handshakes.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on December 27, 2018.
+
+Copyright Notice
+
+   Copyright (c) 2018 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (https://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+
+
+
+
+Kiefer                  Expires December 27, 2018               [Page 1]
+
+Internet-Draft                   pq-tls                        June 2018
+
+
+1.  Introduction
+
+   Supersingular elliptic curve isogenie diffie-hellman (SIDH) has been
+   proposed [SIDH] as a diffie-hellman like key-exchange protocol secure
+   against quantum computers.  Because there's not enough confidence in
+   the security of SIDH yet it should only be used in combination with a
+   classical key-exchange scheme.  This document defines a way to
+   combine "p751sidh" [eSIDH] with ECDHE for the TLS 1.3 [TLS13] key-
+   exchange.  Note that this is different from the recommended
+   combindation in [eSIDH] because it allows using standardised elliptic
+   curves for ECDHE [X962][RFC7748].
+
+1.1.  Performance Considerations
+
+   Both handshake partners have to compute the SIDH values in addition
+   to the ECDHE values, which requires additional time for computation.
+   The handshake messages also get larger because the SIDH values are
+   added.
+
+1.2.  Notation
+
+   TODO: describe necessary SIDH parameters.
+
+1.3.  Terminology
+
+   RFC 2119 [RFC2119] defines the terms MUST, SHOULD, and MAY.
+
+2.  SIDH p751
+
+   TODO: describe.
+
+3.  Negotiated Groups
+
+   This document extends the enum of NamedGroups to use in the
+   "supported_groups" extension from TLS 1.3 [TLS13] Section 4.2.7.  The
+   new codepoint for the "Supported Groups Registry" is:
+
+   enum {
+   // other already defined elliptic curves (see TLS1.3 RFC)
+       ecdhesidh751(0x0105),
+   //
+   } NamedGroup;
+
+   TODO: describe parameters.
+
+
+
+
+
+
+
+Kiefer                  Expires December 27, 2018               [Page 2]
+
+Internet-Draft                   pq-tls                        June 2018
+
+
+4.  ECDHE-SIDH key exchange parameters
+
+   This document defines ECDHE-SIDH parameters to use in the "key_share"
+   extension from TLS 1.3 [TLS13] Section 4.2.8.  ECDHE parameters for
+   both clients and servers are encoded in the key_exchange field of a
+   KeyShareEntry as described in [TLS13] Section 4.2.8 and [RFC7748]
+   described.
+
+   In particular, for secp256r1, secp384r1 and secp521r1, the contents
+   are the serialised value of the following struct:
+
+      struct {
+          uint8 legacy_form = 4;
+          opaque X[coordinate_length];
+          opaque Y[coordinate_length];
+          opaque S[sidh_coordinate_length];
+          opaque P[sidh_coordinate_length];
+          opaque Q[sidh_coordinate_length];
+      } UncompressedPointRepresentation;
+
+   X and Y are as described in [TLS13] Section 4.2.8 For X25519 and X448
+   the contents are the serialised value of the following struct:
+
+      struct {
+          opaque X[coordinate_length];
+          opaque S[sidh_coordinate_length];
+          opaque P[sidh_coordinate_length];
+          opaque Q[sidh_coordinate_length];
+      } UncompressedPointRepresentation;
+
+   X is as described in [RFC7748].  S, P, and Q are the binary
+   representations three field elements from the public SIDH key values
+   in network byte order.  TODO: how long is that?  TODO: SIDH key
+   validation
+
+5.  ECDHE-SIDH Shared Secret Calculation
+
+   The ECDHE and SIDH shared secrets are calculated independently.  The
+   shared secret for ECDHE-SIDH is then the concatenation of the ECDHE
+   and the SIDH shared secrets.
+
+5.1.  ECDHE shared secret calculation
+
+   The ECDHE shared secret calculation is performed as described in
+   [TLS13] Section 7.4.2.
+
+
+
+
+
+
+Kiefer                  Expires December 27, 2018               [Page 3]
+
+Internet-Draft                   pq-tls                        June 2018
+
+
+5.2.  SIDH shared secret calculation
+
+   The SIDH shared secret is calculated as described in [eSIDH]
+   Section 6.  TODO: describe.
+
+6.  Security Considerations
+
+   TODO: This is at least as secure as the used ECDH.
+
+7.  IANA Considerations
+
+   This document makes no requests of IANA yet.
+
+8.  Acknowledgements
+
+9.  References
+
+9.1.  Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
+
+   [RFC7748]  Langley, A., Hamburg, M., and S. Turner, "Elliptic Curves
+              for Security", RFC 7748, DOI 10.17487/RFC7748, January
+              2016, <https://www.rfc-editor.org/info/rfc7748>.
+
+   [TLS13]    Rescorla, E., "The Transport Layer Security (TLS) Protocol
+              Version 1.3", 2018,
+              <https://tools.ietf.org/html/draft-ietf-tls-tls13-28>.
+
+9.2.  Informative References
+
+   [eSIDH]    Costello, C., Longa, P., and M. Naehrig, "Efficient
+              algorithms for supersingular isogeny Diffie-Hellman",
+              IACR-CRYPTO-2016 , 2016,
+              <https://eprint.iacr.org/2016/413.pdf>.
+
+   [SIDH]     Jao, D. and L. De Feo, "Towards quantum-resistant
+              cryptosystems from supersingular elliptic curve isogenie",
+              PQCrypto-2011 , 2011,
+              <https://eprint.iacr.org/2011/506.pdf>.
+
+   [X962]     ANSI, "Public Key Cryptography For The Financial Services
+              Industry: The Elliptic Curve Digital Signature Algorithm
+              (ECDSA)", ANSI X9.62, 1998.
+
+
+
+
+Kiefer                  Expires December 27, 2018               [Page 4]
+
+Internet-Draft                   pq-tls                        June 2018
+
+
+Author's Address
+
+   Franziskus Kiefer
+   Mozilla
+
+   Email: franziskuskiefer@gmail.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Kiefer                  Expires December 27, 2018               [Page 5]
