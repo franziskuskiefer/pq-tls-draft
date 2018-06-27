@@ -1,5 +1,5 @@
 ---
-title: Hybrid ECDH-SIDH Key Exchange for TLS
+title: Hybrid ECDHE-SIDH Key Exchange for TLS
 abbrev: pq-tls
 docname: draft-kiefer-pq-tls-latest
 category: exp
