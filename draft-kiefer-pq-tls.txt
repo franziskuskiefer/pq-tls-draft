@@ -135,13 +135,13 @@ Internet-Draft                   pq-tls                        June 2018
    X is the public point from x25519 or x448 as described in [RFC7748].
    S, P, and Q are the binary representations of three field elements
    over GF(p503^2) and GF(p751^2) respectively from the public SIDH key
-   values in network byte order.  Elements over GF(p503) are encoded in
-   63 octets in little endian format, i.e., the least significant octet
-   is located in the lowest memory address.  Elements (a+b*i) over
-   GF(p503^2), where a and b are defined over GF(p503), are encoded as
-   {a, b}, with a in the lowest memory portion.  GF(p751) is accordingly
-   encoded into 94 octets.  All values in the struct are encoded without
-   length prefixes or separators.
+   values.  Elements over GF(p503) are encoded in 63 octets in little
+   endian format, i.e., the least significant octet is located in the
+   lowest memory address.  Elements (a+b*i) over GF(p503^2), where a and
+   b are defined over GF(p503), are encoded as {a, b}, with a in the
+   lowest memory portion.  GF(p751) is accordingly encoded into 94
+   octets.  All values in the struct are encoded without length prefixes
+   or separators.
 
    Implementers SHOULD perform the checks to verify the SIDH public key
    as specified in Section 9 of [eSIDH].
