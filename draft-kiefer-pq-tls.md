@@ -143,8 +143,7 @@ In particular, the contents are the serialised value of the following struct:
 
 X is the public point from x25519 or x448  as described in {{RFC7748}}.
 S, P, and Q are the binary representations of three field elements over
-GF(p503^2) and GF(p751^2) respectively from the public SIDH key values in
-network byte order.
+GF(p503^2) and GF(p751^2) respectively from the public SIDH key values.
 Elements over GF(p503) are encoded in 63 octets in little endian format, i.e.,
 the least significant octet is located in the lowest memory address.
 Elements (a+b\*i) over GF(p503^2), where a and b are defined over
