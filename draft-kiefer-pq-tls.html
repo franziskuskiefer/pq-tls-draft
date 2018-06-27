@@ -364,7 +364,7 @@ ul.toc li {
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#supersingular-elliptic-curve-isogenie-diffie-hellman-sidh" id="supersingular-elliptic-curve-isogenie-diffie-hellman-sidh">Supersingular elliptic curve Isogenie Diffie-Hellman (SIDH)</a>
 </h1>
-<p id="rfc.section.2.p.1">See <a href="#eSIDH" class="xref">[eSIDH]</a> for details on how to compute key-exchange messages and the shared secret.  This document uses p508 and p751 defined in <a href="#eSIDH" class="xref">[eSIDH]</a><a href="#sike" class="xref">[sike]</a>.</p>
+<p id="rfc.section.2.p.1">See <a href="#eSIDH" class="xref">[eSIDH]</a> for details on how to compute key-exchange messages and the shared secret.  This document uses primes p503 and p751 defined in <a href="#eSIDH" class="xref">[eSIDH]</a><a href="#sike" class="xref">[sike]</a> for sidh503 and sidh751.</p>
 <h1 id="rfc.section.3">
 <a href="#rfc.section.3">3.</a> <a href="#negotiated-groups" id="negotiated-groups">Negotiated Groups</a>
 </h1>
@@ -409,7 +409,7 @@ secret = x25519_secret || sidh_secret
 <h1 id="rfc.section.6">
 <a href="#rfc.section.6">6.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a>
 </h1>
-<p id="rfc.section.6.p.1">The security of SIDH is not well understood at this point.  Therefore the security of the ECDHE-SIDH handshake MUST NOT rely on the security of SIDH.  The security of the described key exchange relies on the security, in particular the collision resistence, of the used key-derivation function.  TLS 1.3 uses HKDF as defined in <a href="#RFC5869" class="xref">[RFC5869]</a> as key-derivation function.  It is therefore important the hash function used in HKDF is collision-resistant.  With these assumptions ECDHE-SIDH is at least as secure as the used ECDHE.</p>
+<p id="rfc.section.6.p.1">The security of SIDH is not well understood at this point.  Therefore the security of the ECDHE-SIDH handshake MUST NOT rely on the security of SIDH.  The security of the described key exchange relies on the security, in particular the collision resistence, of the used key-derivation function.  TLS 1.3 uses HKDF as defined in <a href="#RFC5869" class="xref">[RFC5869]</a> as key-derivation function.  It is therefore important that the hash function used in HKDF is collision-resistant.  With these assumptions ECDHE-SIDH is at least as secure as the used ECDHE.</p>
 <h1 id="rfc.section.7">
 <a href="#rfc.section.7">7.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
 </h1>
