@@ -8,7 +8,7 @@ Intended status: Experimental                              June 27, 2018
 Expires: December 29, 2018
 
 
-                 Hybrid ECDH-SIDH Key Exchange for TLS
+                 Hybrid ECDHE-SIDH Key Exchange for TLS
                        draft-kiefer-pq-tls-latest
 
 Abstract
