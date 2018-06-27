@@ -109,7 +109,7 @@ RFC 2119 {{RFC2119}} defines the terms MUST, SHOULD, and MAY.
 
 See {{eSIDH}} for details on how to compute key-exchange messages and the
 shared secret.
-This document uses p508 and p751 defined in {{eSIDH}}{{sike}}.
+This document uses primes p503 and p751 defined in {{eSIDH}}{{sike}} for sidh503 and sidh751.
 
 # Negotiated Groups
 
@@ -178,7 +178,7 @@ of SIDH.
 The security of the described key exchange relies on the security, in particular
 the collision resistence, of the used key-derivation function.
 TLS 1.3 uses HKDF as defined in {{RFC5869}} as key-derivation function.
-It is therefore important the hash function used in HKDF is collision-resistant.
+It is therefore important that the hash function used in HKDF is collision-resistant.
 With these assumptions ECDHE-SIDH is at least as secure as the used ECDHE.
 
 # IANA Considerations
