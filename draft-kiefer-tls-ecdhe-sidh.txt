@@ -4,18 +4,19 @@
 
 Network Working Group                                          F. Kiefer
 Internet-Draft                                                   Mozilla
-Intended status: Experimental                              June 27, 2018
-Expires: December 29, 2018
+Intended status: Experimental                              July 04, 2018
+Expires: January 5, 2019
 
 
                  Hybrid ECDHE-SIDH Key Exchange for TLS
-                       draft-kiefer-pq-tls-latest
+                   draft-kiefer-tls-ecdhe-sidh-latest
 
 Abstract
 
-   To allow interopability testing of post-quantum key-exchange
-   algorithms this draft specifies a secure way to combine SIDH with
-   ECDHE in TLS handshakes.
+   This draft specifies a TLS key exchange that combines the post-
+   quantum key exchange, Supersingular elliptic curve isogenie diffie-
+   hellman (SIDH), with elliptic curve Diffie-Hellman (ECDHE) key
+   exchange.
 
 Status of This Memo
 
@@ -32,7 +33,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 29, 2018.
+   This Internet-Draft will expire on January 5, 2019.
 
 Copyright Notice
 
@@ -52,10 +53,9 @@ Copyright Notice
 
 
 
-
-Kiefer                  Expires December 29, 2018               [Page 1]
+Kiefer                   Expires January 5, 2019                [Page 1]
 
-Internet-Draft                   pq-tls                        June 2018
+Internet-Draft           ECDHE-SIDH Key Exchange               July 2018
 
 
 1.  Introduction
@@ -64,12 +64,13 @@ Internet-Draft                   pq-tls                        June 2018
    proposed [SIDH] as a diffie-hellman like key-exchange protocol secure
    against quantum computers.  Because there's not enough confidence in
    the security of SIDH yet it should only be used in combination with a
-   classical key-exchange scheme.  This document defines a way to
-   combine [eSIDH] with ECDHE for the TLS 1.3 [TLS13] key-exchange.
-   Note that this is different from the recommended combindation in
-   [eSIDH] because it uses standardised elliptic curves for ECDHE
-   [RFC7748].  In particular "x25519" is combined with "sidh503" and
-   "x448" is combined with "sidh751".
+   classical key-exchange scheme.
+
+   This document defines a way to combine [eSIDH] with the ECDHE key
+   exchanges defined in [RFC7748] for the TLS 1.3 [TLS13] key-exchange.
+
+   "x25519" is combined with "sidh503" and "x448" is combined with
+   "sidh751".
 
 1.1.  Performance Considerations
 
@@ -82,18 +83,53 @@ Internet-Draft                   pq-tls                        June 2018
 
    x25519 and x448 denote the ECDHE algorithms defined over the
    respective curve from [RFC7748].  sidh503 and sidh751 denote the SIDH
-   algorithms defined using prime of bit-length "p=503" and "751"
+   algorithms defined using a prime of bit-length "503" and "751"
    respectively.
 
 1.3.  Terminology
 
-   RFC 2119 [RFC2119] defines the terms MUST, SHOULD, and MAY.
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in BCP
+   14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
 
-2.  Supersingular elliptic curve Isogenie Diffie-Hellman (SIDH)
+2.  Hybrid SIDH-ECDHE Key Exchange
 
-   See [eSIDH] for details on how to compute key-exchange messages and
-   the shared secret.  This document uses primes p503 and p751 defined
-   in [eSIDH][sike] for sidh503 and sidh751.
+   A hybrid key exchange takes the output of two separate key exchanges
+   and mixes the results in a secure way.
+
+   The ECDHE and SIDH shared secrets are calculated independently.  The
+   shared secret for ECDHE-SIDH is then the concatenation of the ECDHE
+   and the SIDH shared secrets.  For x25519sidh503 for example this is
+
+   secret = x25519_secret || sidh_secret
+
+
+
+
+
+Kiefer                   Expires January 5, 2019                [Page 2]
+
+Internet-Draft           ECDHE-SIDH Key Exchange               July 2018
+
+
+   The HKDF-Extract step used by TLS is relied on to combine entropy
+   from both secrets.
+
+2.1.  ECDHE shared secret calculation
+
+   The ECDHE shared secret calculation is performed as described in
+   Section 7.4.2 of [TLS13].
+
+2.2.  SIDH shared secret calculation
+
+   This document uses primes p503 and p751 defined in [eSIDH] and [SIKE]
+   for sidh503 and sidh751.  See [eSIDH] for details on how to compute
+   key-exchange messages and the shared secret.
+
+   The SIDH shared secret is calculated as described in Section 6 of
+   [eSIDH].  The result is an element in GF(p^2).
 
 3.  Negotiated Groups
 
@@ -102,25 +138,19 @@ Internet-Draft                   pq-tls                        June 2018
    new codepoint for the "Supported Groups Registry" is:
 
    enum {
-   // other already defined elliptic curves (see TLS1.3 RFC)
+       ...,
        x25519sidh503(0x0105), x448sidh751(0x0106),
-   //
    } NamedGroup;
-
-
-
-Kiefer                  Expires December 29, 2018               [Page 2]
-
-Internet-Draft                   pq-tls                        June 2018
-
 
 4.  ECDHE-SIDH key exchange parameters
 
    This document defines ECDHE-SIDH parameters to use in the "key_share"
-   extension from TLS 1.3 [TLS13] Section 4.2.8.  ECDHE parameters for
-   both clients and servers are encoded in the key_exchange field of a
-   KeyShareEntry as described in [TLS13] Section 4.2.8 and [RFC7748]
-   described.
+   extension from TLS 1.3 (see Section 4.2.8 of [TLS13]).
+
+   ECDHE parameters for both clients and servers are encoded in the
+   "key_exchange" field of a KeyShareEntry as described in Section 4.2.8
+   of [TLS13] and [RFC7748].  SIDH parameters are appended to this
+   value.
 
    In particular, the contents are the serialised value of the following
    struct:
@@ -132,69 +162,46 @@ Internet-Draft                   pq-tls                        June 2018
           opaque Q[sidh_coordinate_length];
       } UncompressedPointRepresentation;
 
+
+
+
+Kiefer                   Expires January 5, 2019                [Page 3]
+
+Internet-Draft           ECDHE-SIDH Key Exchange               July 2018
+
+
    X is the public point from x25519 or x448 as described in [RFC7748].
+
    S, P, and Q are the binary representations of three field elements
    over GF(p503^2) and GF(p751^2) respectively from the public SIDH key
-   values.  Elements over GF(p503) are encoded in 63 octets in little
-   endian format, i.e., the least significant octet is located in the
-   lowest memory address.  Elements (a+b*i) over GF(p503^2), where a and
-   b are defined over GF(p503), are encoded as {a, b}, with a in the
-   lowest memory portion.  GF(p751) is accordingly encoded into 94
-   octets.  All values in the struct are encoded without length prefixes
-   or separators.
+   values.  Each element, (a+b*i), is encoded with "a" preceding "b".
+   The scalars, "a" and "b" are encoded in 63 or 94 octets,
+   respectively, in little endian format, i.e., the least significant
+   octet appears first.  All values in the struct are encoded without
+   length prefixes or separators.
 
-   Implementers SHOULD perform the checks to verify the SIDH public key
-   as specified in Section 9 of [eSIDH].
+   Implementers MUST perform the checks to verify the SIDH public key as
+   specified in Section 9 of [eSIDH].
 
-5.  ECDHE-SIDH Shared Secret Calculation
-
-   The ECDHE and SIDH shared secrets are calculated independently.  The
-   shared secret for ECDHE-SIDH is then the concatenation of the ECDHE
-   and the SIDH shared secrets.  For x25519sidh503 for example this is
-
-   secret = x25519_secret || sidh_secret
-
-5.1.  ECDHE shared secret calculation
-
-   The ECDHE shared secret calculation is performed as described in
-   [TLS13] Section 7.4.2.
-
-
-
-
-
-
-
-Kiefer                  Expires December 29, 2018               [Page 3]
-
-Internet-Draft                   pq-tls                        June 2018
-
-
-5.2.  SIDH shared secret calculation
-
-   The SIDH shared secret is calculated as described in [eSIDH]
-   Section 6.  The result is an element in GF(p^2).
-
-6.  Security Considerations
+5.  Security Considerations
 
    The security of SIDH is not well understood at this point.  Therefore
-   the security of the ECDHE-SIDH handshake MUST NOT rely on the
-   security of SIDH.  The security of the described key exchange relies
-   on the security, in particular the collision resistence, of the used
-   key-derivation function.  TLS 1.3 uses HKDF as defined in [RFC5869]
-   as key-derivation function.  It is therefore important that the hash
-   function used in HKDF is collision-resistant.  With these assumptions
-   ECDHE-SIDH is at least as secure as the used ECDHE.
+   the security of the ECDHE-SIDH handshake does not rely on the
+   security of SIDH.
 
-7.  IANA Considerations
+   The security of the described key exchange relies on the security, in
+   particular the collision resistance, of the used key-derivation
+   function.  TLS 1.3 uses HKDF [RFC5869] as its key-derivation
+   function.  It is therefore important that the hash function used in
+   HKDF is collision-resistant.
 
-   This document makes no requests of IANA yet.
+6.  IANA Considerations
 
-8.  Acknowledgements
+   TODO: register the codepoints
 
-9.  References
+7.  References
 
-9.1.  Normative References
+7.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -210,23 +217,24 @@ Internet-Draft                   pq-tls                        June 2018
               for Security", RFC 7748, DOI 10.17487/RFC7748, January
               2016, <https://www.rfc-editor.org/info/rfc7748>.
 
-   [TLS13]    Rescorla, E., "The Transport Layer Security (TLS) Protocol
-              Version 1.3", 2018,
-              <https://tools.ietf.org/html/draft-ietf-tls-tls13-28>.
 
 
 
 
-
-
-
-
-Kiefer                  Expires December 29, 2018               [Page 4]
+Kiefer                   Expires January 5, 2019                [Page 4]
 
-Internet-Draft                   pq-tls                        June 2018
+Internet-Draft           ECDHE-SIDH Key Exchange               July 2018
 
 
-9.2.  Informative References
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
+   [TLS13]    Rescorla, E., "The Transport Layer Security (TLS) Protocol
+              Version 1.3", draft-ietf-tls-tls13-28 (work in progress),
+              March 2018.
+
+7.2.  Informative References
 
    [eSIDH]    Costello, C., Longa, P., and M. Naehrig, "Efficient
               algorithms for supersingular isogeny Diffie-Hellman",
@@ -238,12 +246,18 @@ Internet-Draft                   pq-tls                        June 2018
               PQCrypto-2011 , 2011,
               <https://eprint.iacr.org/2011/506.pdf>.
 
-   [sike]     Azarderakhsh, R., Campagna, M., Costello, C., De Feo, L.,
+   [SIKE]     Azarderakhsh, R., Campagna, M., Costello, C., De Feo, L.,
               Hess, B., Jalali, A., Jao, D., Koziel, B., LaMacchia, B.,
               Longa, P., Naehrig, M., Renes, J., Soukharev, V., and D.
               Urbanik, "Supersingular Isogeny Key Encapsulation",
               Submission to the NIST Post-Quantum Standardization
               project , 2017, <http://sike.org/files/SIDH-spec.pdf>.
+
+Acknowledgements
+
+   o  Martin Thomson
+      Mozilla
+      mt@mozilla.com
 
 Author's Address
 
@@ -263,18 +277,4 @@ Author's Address
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Kiefer                  Expires December 29, 2018               [Page 5]
+Kiefer                   Expires January 5, 2019                [Page 5]
