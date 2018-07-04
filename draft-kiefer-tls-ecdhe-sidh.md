@@ -93,7 +93,7 @@ The handshake messages also get larger because the SIDH values are added (see {{
 
 x25519 and x448 denote the ECDHE algorithms defined over the respective curve
 from {{RFC7748}}.
-sidh503 and sidh751 denote the SIDH algorithms defined using prime of bit-length
+sidh503 and sidh751 denote the SIDH algorithms defined using a prime of bit-length
 `503` and `751` respectively.
 
 ## Terminology
@@ -107,7 +107,7 @@ when, and only when, they appear in all capitals, as shown here.
 # Hybrid SIDH-ECDHE Key Exchange
 
 A hybrid key exchange takes the output of two separate key exchanges and mixes
-the results.
+the results in a secure way.
 
 The ECDHE and SIDH shared secrets are calculated independently.  The shared
 secret for ECDHE-SIDH is then the concatenation of the ECDHE and the SIDH shared
@@ -120,7 +120,7 @@ secrets.
 
 ## ECDHE shared secret calculation
 
-The ECDHE shared secret calculation is performed as described in Section 7.4.2 of {{TLS13}} .
+The ECDHE shared secret calculation is performed as described in Section 7.4.2 of {{TLS13}}.
 
 ## SIDH shared secret calculation
 
@@ -166,8 +166,8 @@ X is the public point from x25519 or x448 as described in {{RFC7748}}.
 
 S, P, and Q are the binary representations of three field elements over
 GF(p503^2) and GF(p751^2) respectively from the public SIDH key values.  Each
-element, (a+b\*i), over is encoded with `a` preceding `b`.  The scalars, `a` and
-`b` are encoded in 63 or 94 octets (respectively) in little endian format, i.e.,
+element, (a+b\*i), is encoded with `a` preceding `b`.  The scalars, `a` and
+`b` are encoded in 63 or 94 octets, respectively, in little endian format, i.e.,
 the least significant octet appears first.  All values in the struct are encoded
 without length prefixes or separators.
 
@@ -195,3 +195,7 @@ TODO: register the codepoints
 
 # Acknowledgements
 {:numbered="false"}
+
+* Martin Thomson \\
+  Mozilla \\
+  mt@mozilla.com
