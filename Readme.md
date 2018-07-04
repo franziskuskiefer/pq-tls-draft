@@ -2,7 +2,7 @@
 
 This is the working area for the individual Internet-Draft, "Post-Quantum key-exchange in TLS".
 
-* [Editor's Copy](https://franziskuskiefer.github.io/pq-tls-draft/draft-kiefer-pq-tls.html)
+* [Editor's Copy](https://franziskuskiefer.github.io/pq-tls-draft/draft-kiefer-tls-ecdhe-sidh.html)
 
 ## Building the Draft
 
