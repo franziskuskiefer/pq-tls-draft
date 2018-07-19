@@ -122,14 +122,48 @@ secrets.
 
 The ECDHE shared secret calculation is performed as described in Section 7.4.2 of {{TLS13}}.
 
-## SIDH shared secret calculation
+## SIDH Key Exchange
 
 This document uses primes p503 and p751 defined in {{eSIDH}} and {{SIKE}} for
-sidh503 and sidh751.  See {{eSIDH}} for details on how to compute key-exchange
+sidh503 and sidh751.  See {{SIKE}} for details on how to compute key-exchange
 messages and the shared secret.
+Optimised versions of the algorithms mentioned here might be used.
 
-The SIDH shared secret is calculated as described in Section 6 of {{eSIDH}}.
-The result is an element in GF(p^2).
+### Field Element Representation {#sidh-representation}
+
+Each element (`c=a+b*i`) of the underlying quadratic field GF(p^2) is encoded as
+an array of bytes in little-endian order, i.e., the least significant octet
+appears first, where each element `a,b` from GF(p) is encoded using `itoos` from
+{{SIKE}} Section 1.2.6.
+In particular, an element of GF(p) is converted to
+
+    e_(n-1) * 256^(n-1) + ... + e_1 * 256 + e_0
+
+with `n` 63 for p503 and 94 for p751. The octet representation of each element
+is then the concatenation of `e_i` in little endian, i.e. `e_0||...||e_(n-1)`,
+and the octet representation of element `c` is the concatenation of `a` and `b`,
+`a||b`.
+
+See `fp2toos` {{SIKE}} Section 1.2.6 to 1.2.8 for details.
+
+
+### Key-exchange message generation {#sidh-keyexchange}
+
+After choosing a private key each party computes its public key (P, Q, R) using
+`isogen_l` from {{SIKE}} Section 1.3.5 and converts each element into octets (cf. {{sidh-representation}}).
+
+See `pktoos` from {{SIKE}} Section 1.2.9 for details on converting the public
+key to octets.
+
+### Shared secret calculation
+
+The SIDH shared secret is calculated as described in Section 1.3.6 of {{SIKE}}
+using `isoex_l`.
+The shared secret is a j-invariant and therefore an element of GF(p^2).
+It is converted to octets as described in {{sidh-representation}}.
+
+See `fp2toos` {{SIKE}} Section 1.2.6 to 1.2.8 for details.
+All values are encoded without length prefixes or separators.
 
 
 # Negotiated Groups
@@ -157,19 +191,17 @@ In particular, the contents are the serialised value of the following struct:
 
        struct {
            opaque X[coordinate_length];
-           opaque S[sidh_coordinate_length];
            opaque P[sidh_coordinate_length];
            opaque Q[sidh_coordinate_length];
+           opaque R[sidh_coordinate_length];
        } UncompressedPointRepresentation;
 
 X is the public point from x25519 or x448 as described in {{RFC7748}}.
 
-S, P, and Q are the binary representations of three field elements over
-GF(p503^2) and GF(p751^2) respectively from the public SIDH key values.  Each
-element, (a+b\*i), is encoded with `a` preceding `b`.  The scalars, `a` and
-`b` are encoded in 63 or 94 octets, respectively, in little endian format, i.e.,
-the least significant octet appears first.  All values in the struct are encoded
-without length prefixes or separators.
+P, Q, and R are the binary representations of three field elements over
+GF(p503^2) and GF(p751^2) respectively from the public SIDH key values as
+described in {{sidh-keyexchange}}.
+All values in the struct are encoded without length prefixes or separators.
 
 Implementers MUST perform the checks to verify the SIDH public key as
 specified in Section 9 of {{eSIDH}}.
