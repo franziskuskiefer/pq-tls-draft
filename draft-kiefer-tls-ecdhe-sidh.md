@@ -56,6 +56,35 @@ isogenie"
         - ins: D. Urbanik
       seriesinfo: Submission to the NIST Post-Quantum Standardization project
       target: http://sike.org/files/SIDH-spec.pdf
+  ISOSEC:
+      title: "On the security of supersingular isogeny cryptosystems"
+      date: 2016
+      author:
+        - ins: S. Galbraith
+        - ins: C. Petit
+        - ins: B. Shani
+        - ins: Y. Bo Ti
+      seriesinfo: IACR-CRYPTO-2016
+      target: https://eprint.iacr.org/2016/859.pdf
+  KLM15:
+      title: "Failure is not an Option: Standardization Issues for Post-Quantum Key Agreement"
+      date: 2015
+      author:
+        - ins: D. Kirkwood
+        - ins: B. Lackey
+        - ins: J. McVey
+        - ins: M. Motley
+        - ins: J. Solinas
+        - ins: D. Tuller
+      seriesinfo: Workshop on Cybersecurity in a Post Quantum World, 2015
+  URBJAO:
+      title: "SoK: The Problem Landscape of SIDH"
+      date: 2018
+      author:
+        - ins: D. Urbanik
+        - ins: D. Jao
+      seriesinfo: IACR-CRYPTO-2018
+      target: https://eprint.iacr.org/2018/336.pdf
 
 normative:
   RFC7748:
@@ -209,14 +238,42 @@ specified in Section 9 of {{eSIDH}}.
 
 # Security Considerations
 
-The security of SIDH is not well understood at this point.
-Therefore the security of the ECDHE-SIDH handshake does not rely on the security
-of SIDH.
+Security of SIDH is based on the isogeny walk problem, assuming elliptic
+curves between isogenies are supersingular (see [SIKE] chapter 4.1).
+Algorithms solving this problem as well as usage of isogenies as drop-in
+replacement for Diffie-Hellman are relatively young area of research.
+Therefore the security behind the ECDHE-SIDH handshake does not rely on the
+security of SIDH exclusively.
 
-The security of the described key exchange relies on the security, in particular
-the collision resistance, of the used key-derivation function.
+Idea behind ECDHE-SIDH hybrid scheme is to combine an existing key-agreement
+algorithm with what's belived to be a quantum-resistant one. When large
+quantum computers are available they will be able to break both x25519 and
+x448. In these case ECDHE=SIDH scheme is still safe assuming security of SIDH.
+From the other hand if SIDH is found to be flawed, the hybrid scheme is still
+secure against classical attacks assuming security of x25519/x448. Security
+estimates for classical and quantum computers are provided in table below
+based on {{SIKE}} and {{RFC7748}}.
+
+| Scheme        | Classical | Quantum | NIST PQ category |
+|---------------|-----------|---------|------------------|
+| x25519sidh503 | 128-bit   | 128-bit |      1           |
+| x448sidh751   | 224-bit   | 192-bit |      3           |
+
+As described in [ISOSEC] it is possible to perform active attacks on
+static-static or non-interactive variants of the SIDH scheme. The
+countermeasure for this attack was described in [KLM15]. Research proposes
+so-called "indirect key validation", using Fujisaki-Okamoto type transform.
+Nevertheless, using this transform is impractical and thus SIDH can be
+considered secure only if used for ephemeral keys. A more detailed
+discussion can be found in [URBJAO].
+
+Security against side-channel attacks is described in [SIKE].
+
+The security of the described key exchange relies on the security, in
+particular the collision resistance, of the used key-derivation function.
 TLS 1.3 uses HKDF {{RFC5869}} as its key-derivation function.
-It is therefore important that the hash function used in HKDF is collision-resistant.
+It is therefore important that the hash function used in HKDF is
+collision-resistant.
 
 # IANA Considerations
 
