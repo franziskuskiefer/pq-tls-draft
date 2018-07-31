@@ -297,12 +297,12 @@ ul.toc li {
 <link href="#rfc.authors" rel="Chapter">
 
 
-  <meta name="generator" content="xml2rfc version 2.9.8 - https://tools.ietf.org/tools/xml2rfc" />
+  <meta name="generator" content="xml2rfc version 2.9.6 - https://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
-  <meta name="dct.creator" content="Kiefer, F." />
+  <meta name="dct.creator" content="Kiefer, F. and K. Kwiatkowski" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-kiefer-tls-ecdhe-sidh-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-07-19" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-07-31" />
   <meta name="dct.abstract" content="This draft specifies a TLS key exchange that combines the post-quantum key exchange, Supersingular elliptic curve isogenie diffie-hellman (SIDH), with elliptic curve Diffie-Hellman (ECDHE) key exchange." />
   <meta name="description" content="This draft specifies a TLS key exchange that combines the post-quantum key exchange, Supersingular elliptic curve isogenie diffie-hellman (SIDH), with elliptic curve Diffie-Hellman (ECDHE) key exchange." />
 
@@ -323,11 +323,15 @@ ul.toc li {
 </tr>
 <tr>
 <td class="left">Intended status: Experimental</td>
-<td class="right">July 19, 2018</td>
+<td class="right">K. Kwiatkowski</td>
 </tr>
 <tr>
-<td class="left">Expires: January 20, 2019</td>
-<td class="right"></td>
+<td class="left">Expires: February 1, 2019</td>
+<td class="right">Cloudflare</td>
+</tr>
+<tr>
+<td class="left"></td>
+<td class="right">July 31, 2018</td>
 </tr>
 
     	
@@ -343,7 +347,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on January 20, 2019.</p>
+<p>This Internet-Draft will expire on February 1, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -431,8 +435,33 @@ enum {
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a>
 </h1>
-<p id="rfc.section.5.p.1">The security of SIDH is not well understood at this point.  Therefore the security of the ECDHE-SIDH handshake does not rely on the security of SIDH.</p>
-<p id="rfc.section.5.p.2">The security of the described key exchange relies on the security, in particular the collision resistance, of the used key-derivation function.  TLS 1.3 uses HKDF <a href="#RFC5869" class="xref">[RFC5869]</a> as its key-derivation function.  It is therefore important that the hash function used in HKDF is collision-resistant.</p>
+<p id="rfc.section.5.p.1">Security of SIDH is based on the isogeny walk problem, assuming elliptic curves between isogenies are supersingular (see <a href="#SIKE" class="xref">[SIKE]</a> chapter 4.1).  Algorithms solving this problem as well as usage of isogenies as drop-in replacement for Diffie-Hellman are relatively young area of research.  Therefore the security behind the ECDHE-SIDH handshake does not rely on the security of SIDH exclusively.</p>
+<p id="rfc.section.5.p.2">Idea behind ECDHE-SIDH hybrid scheme is to combine an existing key-agreement algorithm with what&#8217;s believed to be a quantum-resistant one. When large quantum computers are available they will be able to break both x25519 and x448. In this case the ECDHE-SIDH scheme is still safe assuming SIDH is secure.  On the other hand, if SIDH is found to be flawed, the hybrid scheme is still secure against classical attacks assuming security of x25519/x448. Security estimates for classical and quantum computers are provided in table below based on <a href="#SIKE" class="xref">[SIKE]</a> and <a href="#RFC7748" class="xref">[RFC7748]</a>.</p>
+<table cellpadding="3" cellspacing="0" class="tt full center">
+<thead><tr>
+<th class="left">Scheme</th>
+<th class="left">Classical</th>
+<th class="left">Quantum</th>
+<th class="left">NIST PQ category</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="left">x25519sidh503</td>
+<td class="left">128-bit</td>
+<td class="left">128-bit</td>
+<td class="left">1</td>
+</tr>
+<tr>
+<td class="left">x448sidh751</td>
+<td class="left">224-bit</td>
+<td class="left">192-bit</td>
+<td class="left">3</td>
+</tr>
+</tbody>
+</table>
+<p id="rfc.section.5.p.3">As described in <a href="#ISOSEC" class="xref">[ISOSEC]</a> it is possible to perform active attacks on static-static or non-interactive variants of the SIDH scheme. The countermeasure for this attack was described in <a href="#KLM15" class="xref">[KLM15]</a>. Research proposes so-called &#8220;indirect key validation&#8221;, using Fujisaki-Okamoto type transform.  However, using this transform is impractical and thus SIDH can be considered secure only if used for ephemeral keys. A more detailed discussion can be found in <a href="#URBJAO" class="xref">[URBJAO]</a>.</p>
+<p id="rfc.section.5.p.4">Security against side-channel attacks is described in <a href="#SIKE" class="xref">[SIKE]</a>.</p>
+<p id="rfc.section.5.p.5">The security of the described key exchange relies on the security, in particular the collision resistance, of the used key-derivation function.  TLS 1.3 uses HKDF <a href="#RFC5869" class="xref">[RFC5869]</a> as its key-derivation function.  It is therefore important that the hash function used in HKDF is collision-resistant.</p>
 <h1 id="rfc.section.6">
 <a href="#rfc.section.6">6.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
 </h1>
@@ -477,6 +506,16 @@ enum {
 <a>Costello, C.</a>, <a>Longa, P.</a> and <a>M. Naehrig</a>, "<a href="https://eprint.iacr.org/2016/413.pdf">Efficient algorithms for supersingular isogeny Diffie-Hellman</a>", IACR-CRYPTO-2016 , 2016.</td>
 </tr>
 <tr>
+<td class="reference"><b id="ISOSEC">[ISOSEC]</b></td>
+<td class="top">
+<a>Galbraith, S.</a>, <a>Petit, C.</a>, <a>Shani, B.</a> and <a>Y. Bo Ti</a>, "<a href="https://eprint.iacr.org/2016/859.pdf">On the security of supersingular isogeny cryptosystems</a>", IACR-CRYPTO-2016 , 2016.</td>
+</tr>
+<tr>
+<td class="reference"><b id="KLM15">[KLM15]</b></td>
+<td class="top">
+<a>Kirkwood, D.</a>, <a>Lackey, B.</a>, <a>McVey, J.</a>, <a>Motley, M.</a>, <a>Solinas, J.</a> and <a>D. Tuller</a>, "<a>Failure is not an Option: Standardization Issues for Post-Quantum Key Agreement</a>", Workshop on Cybersecurity in a Post Quantum World, 2015 , 2015.</td>
+</tr>
+<tr>
 <td class="reference"><b id="SIDH">[SIDH]</b></td>
 <td class="top">
 <a>Jao, D.</a> and <a>L. De Feo</a>, "<a href="https://eprint.iacr.org/2011/506.pdf">Towards quantum-resistant cryptosystems from supersingular elliptic curve isogenie</a>", PQCrypto-2011 , 2011.</td>
@@ -486,12 +525,17 @@ enum {
 <td class="top">
 <a>Azarderakhsh, R.</a>, <a>Campagna, M.</a>, <a>Costello, C.</a>, <a>De Feo, L.</a>, <a>Hess, B.</a>, <a>Jalali, A.</a>, <a>Jao, D.</a>, <a>Koziel, B.</a>, <a>LaMacchia, B.</a>, <a>Longa, P.</a>, <a>Naehrig, M.</a>, <a>Renes, J.</a>, <a>Soukharev, V.</a> and <a>D. Urbanik</a>, "<a href="http://sike.org/files/SIDH-spec.pdf">Supersingular Isogeny Key Encapsulation</a>", Submission to the NIST Post-Quantum Standardization project , 2017.</td>
 </tr>
+<tr>
+<td class="reference"><b id="URBJAO">[URBJAO]</b></td>
+<td class="top">
+<a>Urbanik, D.</a> and <a>D. Jao</a>, "<a href="https://eprint.iacr.org/2018/336.pdf">SoK: The Problem Landscape of SIDH</a>", IACR-CRYPTO-2018 , 2018.</td>
+</tr>
 </tbody></table>
 <h1 id="rfc.acknowledgements"><a href="#rfc.acknowledgements">Acknowledgements</a></h1>
 <p></p>
 
 <ul><li>Martin Thomson <br> Mozilla <br> mt@mozilla.com</li></ul>
-<h1 id="rfc.authors"><a href="#rfc.authors">Author's Address</a></h1>
+<h1 id="rfc.authors"><a href="#rfc.authors">Authors' Addresses</a></h1>
 <div class="avoidbreak">
   <address class="vcard">
 	<span class="vcardline">
@@ -511,6 +555,27 @@ enum {
 	  <span class="country-name vcardline"></span>
 	</span>
 	<span class="vcardline">EMail: <a href="mailto:franziskuskiefer@gmail.com">franziskuskiefer@gmail.com</a></span>
+
+  </address>
+</div><div class="avoidbreak">
+  <address class="vcard">
+	<span class="vcardline">
+	  <span class="fn">ris Kwiatkowski</span> 
+	  <span class="n hidden">
+		<span class="family-name">Kwiatkowski</span>
+	  </span>
+	</span>
+	<span class="org vcardline">Cloudflare</span>
+	<span class="adr">
+	  
+	  <span class="vcardline">
+		<span class="locality"></span> 
+		<span class="region"></span>
+		<span class="code"></span>
+	  </span>
+	  <span class="country-name vcardline"></span>
+	</span>
+	<span class="vcardline">EMail: <a href="mailto:kris@cloudflare.com">kris@cloudflare.com</a></span>
 
   </address>
 </div>
@@ -555,7 +620,7 @@ enum {
 </li>
 </ul><li><a href="#rfc.acknowledgements">Acknowledgements</a>
 </li>
-<li><a href="#rfc.authors">Author's Address</a>
+<li><a href="#rfc.authors">Authors' Addresses</a>
 </li>
 
 
