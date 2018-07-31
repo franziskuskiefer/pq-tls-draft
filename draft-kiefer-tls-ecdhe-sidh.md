@@ -17,7 +17,7 @@ author:
     organization: Mozilla
     email: franziskuskiefer@gmail.com
  -  ins: K. Kwiatkowski
-    name: ris Kwiatkowski
+    name: Krzysztof Kwiatkowski
     organization: Cloudflare
     email: kris@cloudflare.com
 
