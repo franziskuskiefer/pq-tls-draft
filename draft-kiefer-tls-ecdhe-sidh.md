@@ -16,6 +16,10 @@ author:
     name: Franziskus Kiefer
     organization: Mozilla
     email: franziskuskiefer@gmail.com
+ -  ins: K. Kwiatkowski
+    name: ris Kwiatkowski
+    organization: Cloudflare
+    email: kris@cloudflare.com
 
 informative:
   eSIDH:
@@ -239,17 +243,17 @@ specified in Section 9 of {{eSIDH}}.
 # Security Considerations
 
 Security of SIDH is based on the isogeny walk problem, assuming elliptic
-curves between isogenies are supersingular (see [SIKE] chapter 4.1).
+curves between isogenies are supersingular (see {{SIKE}} chapter 4.1).
 Algorithms solving this problem as well as usage of isogenies as drop-in
 replacement for Diffie-Hellman are relatively young area of research.
 Therefore the security behind the ECDHE-SIDH handshake does not rely on the
 security of SIDH exclusively.
 
 Idea behind ECDHE-SIDH hybrid scheme is to combine an existing key-agreement
-algorithm with what's belived to be a quantum-resistant one. When large
+algorithm with what's believed to be a quantum-resistant one. When large
 quantum computers are available they will be able to break both x25519 and
-x448. In these case ECDHE=SIDH scheme is still safe assuming security of SIDH.
-From the other hand if SIDH is found to be flawed, the hybrid scheme is still
+x448. In this case the ECDHE-SIDH scheme is still safe assuming SIDH is secure.
+On the other hand, if SIDH is found to be flawed, the hybrid scheme is still
 secure against classical attacks assuming security of x25519/x448. Security
 estimates for classical and quantum computers are provided in table below
 based on {{SIKE}} and {{RFC7748}}.
@@ -259,15 +263,15 @@ based on {{SIKE}} and {{RFC7748}}.
 | x25519sidh503 | 128-bit   | 128-bit |      1           |
 | x448sidh751   | 224-bit   | 192-bit |      3           |
 
-As described in [ISOSEC] it is possible to perform active attacks on
+As described in {{ISOSEC}} it is possible to perform active attacks on
 static-static or non-interactive variants of the SIDH scheme. The
-countermeasure for this attack was described in [KLM15]. Research proposes
+countermeasure for this attack was described in {{KLM15}}. Research proposes
 so-called "indirect key validation", using Fujisaki-Okamoto type transform.
-Nevertheless, using this transform is impractical and thus SIDH can be
+However, using this transform is impractical and thus SIDH can be
 considered secure only if used for ephemeral keys. A more detailed
-discussion can be found in [URBJAO].
+discussion can be found in {{URBJAO}}.
 
-Security against side-channel attacks is described in [SIKE].
+Security against side-channel attacks is described in {{SIKE}}.
 
 The security of the described key exchange relies on the security, in
 particular the collision resistance, of the used key-derivation function.
