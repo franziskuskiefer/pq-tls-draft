@@ -4,8 +4,9 @@
 
 Network Working Group                                          F. Kiefer
 Internet-Draft                                                   Mozilla
-Intended status: Experimental                              July 19, 2018
-Expires: January 20, 2019
+Intended status: Experimental                             K. Kwiatkowski
+Expires: February 1, 2019                                     Cloudflare
+                                                           July 31, 2018
 
 
                  Hybrid ECDHE-SIDH Key Exchange for TLS
@@ -33,7 +34,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 20, 2019.
+   This Internet-Draft will expire on February 1, 2019.
 
 Copyright Notice
 
@@ -52,8 +53,7 @@ Copyright Notice
 
 
 
-
-Kiefer                  Expires January 20, 2019                [Page 1]
+Kiefer & Kwiatkowski    Expires February 1, 2019                [Page 1]
 
 Internet-Draft           ECDHE-SIDH Key Exchange               July 2018
 
@@ -109,7 +109,7 @@ Internet-Draft           ECDHE-SIDH Key Exchange               July 2018
 
 
 
-Kiefer                  Expires January 20, 2019                [Page 2]
+Kiefer & Kwiatkowski    Expires February 1, 2019                [Page 2]
 
 Internet-Draft           ECDHE-SIDH Key Exchange               July 2018
 
@@ -165,7 +165,7 @@ Internet-Draft           ECDHE-SIDH Key Exchange               July 2018
 
 
 
-Kiefer                  Expires January 20, 2019                [Page 3]
+Kiefer & Kwiatkowski    Expires February 1, 2019                [Page 3]
 
 Internet-Draft           ECDHE-SIDH Key Exchange               July 2018
 
@@ -221,16 +221,47 @@ Internet-Draft           ECDHE-SIDH Key Exchange               July 2018
 
 
 
-Kiefer                  Expires January 20, 2019                [Page 4]
+Kiefer & Kwiatkowski    Expires February 1, 2019                [Page 4]
 
 Internet-Draft           ECDHE-SIDH Key Exchange               July 2018
 
 
 5.  Security Considerations
 
-   The security of SIDH is not well understood at this point.  Therefore
-   the security of the ECDHE-SIDH handshake does not rely on the
-   security of SIDH.
+   Security of SIDH is based on the isogeny walk problem, assuming
+   elliptic curves between isogenies are supersingular (see [SIKE]
+   chapter 4.1).  Algorithms solving this problem as well as usage of
+   isogenies as drop-in replacement for Diffie-Hellman are relatively
+   young area of research.  Therefore the security behind the ECDHE-SIDH
+   handshake does not rely on the security of SIDH exclusively.
+
+   Idea behind ECDHE-SIDH hybrid scheme is to combine an existing key-
+   agreement algorithm with what's believed to be a quantum-resistant
+   one.  When large quantum computers are available they will be able to
+   break both x25519 and x448.  In this case the ECDHE-SIDH scheme is
+   still safe assuming SIDH is secure.  On the other hand, if SIDH is
+   found to be flawed, the hybrid scheme is still secure against
+   classical attacks assuming security of x25519/x448.  Security
+   estimates for classical and quantum computers are provided in table
+   below based on [SIKE] and [RFC7748].
+
+        +---------------+-----------+---------+------------------+
+        | Scheme        | Classical | Quantum | NIST PQ category |
+        +---------------+-----------+---------+------------------+
+        | x25519sidh503 | 128-bit   | 128-bit | 1                |
+        |               |           |         |                  |
+        | x448sidh751   | 224-bit   | 192-bit | 3                |
+        +---------------+-----------+---------+------------------+
+
+   As described in [ISOSEC] it is possible to perform active attacks on
+   static-static or non-interactive variants of the SIDH scheme.  The
+   countermeasure for this attack was described in [KLM15].  Research
+   proposes so-called "indirect key validation", using Fujisaki-Okamoto
+   type transform.  However, using this transform is impractical and
+   thus SIDH can be considered secure only if used for ephemeral keys.
+   A more detailed discussion can be found in [URBJAO].
+
+   Security against side-channel attacks is described in [SIKE].
 
    The security of the described key exchange relies on the security, in
    particular the collision resistance, of the used key-derivation
@@ -241,6 +272,15 @@ Internet-Draft           ECDHE-SIDH Key Exchange               July 2018
 6.  IANA Considerations
 
    TODO: register the codepoints
+
+
+
+
+
+Kiefer & Kwiatkowski    Expires February 1, 2019                [Page 5]
+
+Internet-Draft           ECDHE-SIDH Key Exchange               July 2018
+
 
 7.  References
 
@@ -275,17 +315,28 @@ Internet-Draft           ECDHE-SIDH Key Exchange               July 2018
               IACR-CRYPTO-2016 , 2016,
               <https://eprint.iacr.org/2016/413.pdf>.
 
+   [ISOSEC]   Galbraith, S., Petit, C., Shani, B., and Y. Bo Ti, "On the
+              security of supersingular isogeny cryptosystems", IACR-
+              CRYPTO-2016 , 2016,
+              <https://eprint.iacr.org/2016/859.pdf>.
 
-
-Kiefer                  Expires January 20, 2019                [Page 5]
-
-Internet-Draft           ECDHE-SIDH Key Exchange               July 2018
-
+   [KLM15]    Kirkwood, D., Lackey, B., McVey, J., Motley, M., Solinas,
+              J., and D. Tuller, "Failure is not an Option:
+              Standardization Issues for Post-Quantum Key Agreement",
+              Workshop on Cybersecurity in a Post Quantum World, 2015 ,
+              2015.
 
    [SIDH]     Jao, D. and L. De Feo, "Towards quantum-resistant
               cryptosystems from supersingular elliptic curve isogenie",
               PQCrypto-2011 , 2011,
               <https://eprint.iacr.org/2011/506.pdf>.
+
+
+
+Kiefer & Kwiatkowski    Expires February 1, 2019                [Page 6]
+
+Internet-Draft           ECDHE-SIDH Key Exchange               July 2018
+
 
    [SIKE]     Azarderakhsh, R., Campagna, M., Costello, C., De Feo, L.,
               Hess, B., Jalali, A., Jao, D., Koziel, B., LaMacchia, B.,
@@ -294,13 +345,17 @@ Internet-Draft           ECDHE-SIDH Key Exchange               July 2018
               Submission to the NIST Post-Quantum Standardization
               project , 2017, <http://sike.org/files/SIDH-spec.pdf>.
 
+   [URBJAO]   Urbanik, D. and D. Jao, "SoK: The Problem Landscape of
+              SIDH", IACR-CRYPTO-2018 , 2018,
+              <https://eprint.iacr.org/2018/336.pdf>.
+
 Acknowledgements
 
    o  Martin Thomson
       Mozilla
       mt@mozilla.com
 
-Author's Address
+Authors' Addresses
 
    Franziskus Kiefer
    Mozilla
@@ -308,6 +363,10 @@ Author's Address
    Email: franziskuskiefer@gmail.com
 
 
+   Krzysztof Kwiatkowski
+   Cloudflare
+
+   Email: kris@cloudflare.com
 
 
 
@@ -330,7 +389,4 @@ Author's Address
 
 
 
-
-
-
-Kiefer                  Expires January 20, 2019                [Page 6]
+Kiefer & Kwiatkowski    Expires February 1, 2019                [Page 7]
