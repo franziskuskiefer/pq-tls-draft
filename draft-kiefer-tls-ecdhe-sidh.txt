@@ -5,8 +5,8 @@
 Network Working Group                                          F. Kiefer
 Internet-Draft                                                   Mozilla
 Intended status: Experimental                             K. Kwiatkowski
-Expires: February 1, 2019                                     Cloudflare
-                                                           July 31, 2018
+Expires: February 3, 2019                                     Cloudflare
+                                                         August 02, 2018
 
 
                  Hybrid ECDHE-SIDH Key Exchange for TLS
@@ -34,7 +34,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on February 1, 2019.
+   This Internet-Draft will expire on February 3, 2019.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Kiefer & Kwiatkowski    Expires February 1, 2019                [Page 1]
+Kiefer & Kwiatkowski    Expires February 3, 2019                [Page 1]
 
-Internet-Draft           ECDHE-SIDH Key Exchange               July 2018
+Internet-Draft           ECDHE-SIDH Key Exchange             August 2018
 
 
 1.  Introduction
@@ -109,9 +109,9 @@ Internet-Draft           ECDHE-SIDH Key Exchange               July 2018
 
 
 
-Kiefer & Kwiatkowski    Expires February 1, 2019                [Page 2]
+Kiefer & Kwiatkowski    Expires February 3, 2019                [Page 2]
 
-Internet-Draft           ECDHE-SIDH Key Exchange               July 2018
+Internet-Draft           ECDHE-SIDH Key Exchange             August 2018
 
 
    The HKDF-Extract step used by TLS is relied on to combine entropy
@@ -165,9 +165,9 @@ Internet-Draft           ECDHE-SIDH Key Exchange               July 2018
 
 
 
-Kiefer & Kwiatkowski    Expires February 1, 2019                [Page 3]
+Kiefer & Kwiatkowski    Expires February 3, 2019                [Page 3]
 
-Internet-Draft           ECDHE-SIDH Key Exchange               July 2018
+Internet-Draft           ECDHE-SIDH Key Exchange             August 2018
 
 
    See "fp2toos" [SIKE] Section 1.2.6 to 1.2.8 for details.  All values
@@ -221,9 +221,9 @@ Internet-Draft           ECDHE-SIDH Key Exchange               July 2018
 
 
 
-Kiefer & Kwiatkowski    Expires February 1, 2019                [Page 4]
+Kiefer & Kwiatkowski    Expires February 3, 2019                [Page 4]
 
-Internet-Draft           ECDHE-SIDH Key Exchange               July 2018
+Internet-Draft           ECDHE-SIDH Key Exchange             August 2018
 
 
 5.  Security Considerations
@@ -243,15 +243,16 @@ Internet-Draft           ECDHE-SIDH Key Exchange               July 2018
    found to be flawed, the hybrid scheme is still secure against
    classical attacks assuming security of x25519/x448.  Security
    estimates for classical and quantum computers are provided in table
-   below based on [SIKE] and [RFC7748].
+   below based on [SIKE] and [RFC7748].  [RNSL] Chapter 1 provides
+   introduction to quantum resource estimates.
 
-        +---------------+-----------+---------+------------------+
-        | Scheme        | Classical | Quantum | NIST PQ category |
-        +---------------+-----------+---------+------------------+
-        | x25519sidh503 | 128-bit   | 128-bit | 1                |
-        |               |           |         |                  |
-        | x448sidh751   | 224-bit   | 192-bit | 3                |
-        +---------------+-----------+---------+------------------+
+        +---------------+-----------+----------+------------------+
+        | Scheme        | Classical | Quantum  | NIST PQ category |
+        +---------------+-----------+----------+------------------+
+        | x25519sidh503 | 128-bit   | 64-qubit | 1                |
+        |               |           |          |                  |
+        | x448sidh751   | 224-bit   | 96-qubit | 3                |
+        +---------------+-----------+----------+------------------+
 
    As described in [ISOSEC] it is possible to perform active attacks on
    static-static or non-interactive variants of the SIDH scheme.  The
@@ -269,18 +270,21 @@ Internet-Draft           ECDHE-SIDH Key Exchange               July 2018
    function.  It is therefore important that the hash function used in
    HKDF is collision-resistant.
 
+
+
+
+
+
+
+
+Kiefer & Kwiatkowski    Expires February 3, 2019                [Page 5]
+
+Internet-Draft           ECDHE-SIDH Key Exchange             August 2018
+
+
 6.  IANA Considerations
 
    TODO: register the codepoints
-
-
-
-
-
-Kiefer & Kwiatkowski    Expires February 1, 2019                [Page 5]
-
-Internet-Draft           ECDHE-SIDH Key Exchange               July 2018
-
 
 7.  References
 
@@ -326,17 +330,23 @@ Internet-Draft           ECDHE-SIDH Key Exchange               July 2018
               Workshop on Cybersecurity in a Post Quantum World, 2015 ,
               2015.
 
+
+
+
+Kiefer & Kwiatkowski    Expires February 3, 2019                [Page 6]
+
+Internet-Draft           ECDHE-SIDH Key Exchange             August 2018
+
+
+   [RNSL]     Roetteler, M., Naehrig, M., Svore, K., and K. Lauter,
+              "Quantum Resource Estimates for Computing Elliptic Curve
+              Discrete Logarithms", arXiv , 2017,
+              <https://arxiv.org/pdf/1706.06752.pdf>.
+
    [SIDH]     Jao, D. and L. De Feo, "Towards quantum-resistant
               cryptosystems from supersingular elliptic curve isogenie",
               PQCrypto-2011 , 2011,
               <https://eprint.iacr.org/2011/506.pdf>.
-
-
-
-Kiefer & Kwiatkowski    Expires February 1, 2019                [Page 6]
-
-Internet-Draft           ECDHE-SIDH Key Exchange               July 2018
-
 
    [SIKE]     Azarderakhsh, R., Campagna, M., Costello, C., De Feo, L.,
               Hess, B., Jalali, A., Jao, D., Koziel, B., LaMacchia, B.,
@@ -379,14 +389,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-Kiefer & Kwiatkowski    Expires February 1, 2019                [Page 7]
+Kiefer & Kwiatkowski    Expires February 3, 2019                [Page 7]
