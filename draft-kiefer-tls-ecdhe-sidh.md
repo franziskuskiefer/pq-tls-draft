@@ -89,7 +89,16 @@ isogenie"
         - ins: D. Jao
       seriesinfo: IACR-CRYPTO-2018
       target: https://eprint.iacr.org/2018/336.pdf
-
+  RNSL:
+      title: "Quantum Resource Estimates for Computing Elliptic Curve Discrete Logarithms"
+      date: 2017
+      author:
+        - ins: M. Roetteler
+        - ins: M. Naehrig
+        - ins: K. Svore
+        - ins: K. Lauter
+      seriesinfo: arXiv
+      target: https://arxiv.org/pdf/1706.06752.pdf
 normative:
   RFC7748:
   RFC5869:
@@ -256,12 +265,13 @@ x448. In this case the ECDHE-SIDH scheme is still safe assuming SIDH is secure.
 On the other hand, if SIDH is found to be flawed, the hybrid scheme is still
 secure against classical attacks assuming security of x25519/x448. Security
 estimates for classical and quantum computers are provided in table below
-based on {{SIKE}} and {{RFC7748}}.
+based on {{SIKE}} and {{RFC7748}}. {{RNSL}} Chapter 1 provides introduction
+to quantum resource estimates.
 
-| Scheme        | Classical | Quantum | NIST PQ category |
-|---------------|-----------|---------|------------------|
-| x25519sidh503 | 128-bit   | 128-bit |      1           |
-| x448sidh751   | 224-bit   | 192-bit |      3           |
+| Scheme        | Classical |  Quantum | NIST PQ category |
+|---------------|-----------|----------|------------------|
+| x25519sidh503 | 128-bit   | 64-qubit |      1           |
+| x448sidh751   | 224-bit   | 96-qubit |      3           |
 
 As described in {{ISOSEC}} it is possible to perform active attacks on
 static-static or non-interactive variants of the SIDH scheme. The
