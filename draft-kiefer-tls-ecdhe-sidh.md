@@ -31,35 +31,6 @@ informative:
      date: 2016
      seriesinfo: IACR-CRYPTO-2016
      target: https://eprint.iacr.org/2016/413.pdf
-  SIDH:
-     title: "Towards quantum-resistant cryptosystems from supersingular elliptic curve
-isogenie"
-     author:
-       - ins: D. Jao
-       - ins: L. De Feo
-     date: 2011
-     seriesinfo: PQCrypto-2011
-     target: https://eprint.iacr.org/2011/506.pdf
-  SIKE:
-      title: "Supersingular Isogeny Key Encapsulation"
-      date: 2017
-      author:
-        - ins: R. Azarderakhsh
-        - ins: M. Campagna
-        - ins: C. Costello
-        - ins: L. De Feo
-        - ins: B. Hess
-        - ins: A. Jalali
-        - ins: D. Jao
-        - ins: B. Koziel
-        - ins: B. LaMacchia
-        - ins: P. Longa
-        - ins: M. Naehrig
-        - ins: J. Renes
-        - ins: V. Soukharev
-        - ins: D. Urbanik
-      seriesinfo: Submission to the NIST Post-Quantum Standardization project
-      target: http://sike.org/files/SIDH-spec.pdf
   ISOSEC:
       title: "On the security of supersingular isogeny cryptosystems"
       date: 2016
@@ -102,6 +73,35 @@ isogenie"
 normative:
   RFC7748:
   RFC5869:
+  SIDH:
+     title: "Towards quantum-resistant cryptosystems from supersingular elliptic curve
+isogenie"
+     author:
+       - ins: D. Jao
+       - ins: L. De Feo
+     date: 2011
+     seriesinfo: PQCrypto-2011
+     target: https://eprint.iacr.org/2011/506.pdf
+  SIKE:
+      title: "Supersingular Isogeny Key Encapsulation"
+      date: 2017
+      author:
+        - ins: R. Azarderakhsh
+        - ins: M. Campagna
+        - ins: C. Costello
+        - ins: L. De Feo
+        - ins: B. Hess
+        - ins: A. Jalali
+        - ins: D. Jao
+        - ins: B. Koziel
+        - ins: B. LaMacchia
+        - ins: P. Longa
+        - ins: M. Naehrig
+        - ins: J. Renes
+        - ins: V. Soukharev
+        - ins: D. Urbanik
+      seriesinfo: Submission to the NIST Post-Quantum Standardization project
+      target: http://sike.org/files/SIDH-spec.pdf
 
 --- abstract
 
