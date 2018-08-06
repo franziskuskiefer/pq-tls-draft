@@ -201,6 +201,14 @@ key to octets.
 
 The SIDH shared secret is calculated as described in Section 1.3.6 of {{SIKE}}
 using `isoex_l`.
+
+Calculating SIDH shared secret requires each side to use isogenies of different
+degree. This document assumes parameterizations as described in {{SIKE}}, which
+is based on 4- and 3-power degree isogenies.
+In order to calculate the shared secret, the client always generates an ephemeral
+key pair based on 4-power degree isogenies. Accordingly, the server always
+generates an ephemeral key pair based on 3-power degree isogenies.
+
 The shared secret is a j-invariant and therefore an element of GF(p^2).
 It is converted to octets as described in {{sidh-representation}}.
 
