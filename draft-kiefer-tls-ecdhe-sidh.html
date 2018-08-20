@@ -297,12 +297,12 @@ ul.toc li {
 <link href="#rfc.authors" rel="Chapter">
 
 
-  <meta name="generator" content="xml2rfc version 2.9.8 - https://tools.ietf.org/tools/xml2rfc" />
+  <meta name="generator" content="xml2rfc version 2.10.0 - https://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Kiefer, F. and K. Kwiatkowski" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-kiefer-tls-ecdhe-sidh-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-08-02" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-08-20" />
   <meta name="dct.abstract" content="This draft specifies a TLS key exchange that combines the post-quantum key exchange, Supersingular elliptic curve isogenie diffie-hellman (SIDH), with elliptic curve Diffie-Hellman (ECDHE) key exchange." />
   <meta name="description" content="This draft specifies a TLS key exchange that combines the post-quantum key exchange, Supersingular elliptic curve isogenie diffie-hellman (SIDH), with elliptic curve Diffie-Hellman (ECDHE) key exchange." />
 
@@ -326,12 +326,12 @@ ul.toc li {
 <td class="right">K. Kwiatkowski</td>
 </tr>
 <tr>
-<td class="left">Expires: February 3, 2019</td>
+<td class="left">Expires: February 21, 2019</td>
 <td class="right">Cloudflare</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">August 02, 2018</td>
+<td class="right">August 20, 2018</td>
 </tr>
 
     	
@@ -347,7 +347,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on February 3, 2019.</p>
+<p>This Internet-Draft will expire on February 21, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -355,7 +355,7 @@ ul.toc li {
 <a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a>
 </h1>
 <p id="rfc.section.1.p.1">Supersingular elliptic curve isogenie diffie-hellman (SIDH) has been proposed <a href="#SIDH" class="xref">[SIDH]</a> as a diffie-hellman like key-exchange protocol secure against quantum computers.  Because there&#8217;s not enough confidence in the security of SIDH yet it should only be used in combination with a classical key-exchange scheme.</p>
-<p id="rfc.section.1.p.2">This document defines a way to combine <a href="#eSIDH" class="xref">[eSIDH]</a> with the ECDHE key exchanges defined in <a href="#RFC7748" class="xref">[RFC7748]</a> for the TLS 1.3 <a href="#TLS13" class="xref">[TLS13]</a> key-exchange.</p>
+<p id="rfc.section.1.p.2">This document defines a way to combine <a href="#eSIDH" class="xref">[eSIDH]</a> with the ECDHE key exchanges defined in <a href="#RFC7748" class="xref">[RFC7748]</a> for the TLS 1.3 <a href="#RFC8446" class="xref">[RFC8446]</a> key-exchange.</p>
 <p><samp>x25519</samp> is combined with <samp>sidh503</samp> and <samp>x448</samp> is combined with <samp>sidh751</samp>.</p>
 <h1 id="rfc.section.1.1">
 <a href="#rfc.section.1.1">1.1.</a> <a href="#performance-considerations" id="performance-considerations">Performance Considerations</a>
@@ -381,7 +381,7 @@ secret = x25519_secret || sidh_secret
 <h1 id="rfc.section.2.1">
 <a href="#rfc.section.2.1">2.1.</a> <a href="#ecdhe-shared-secret-calculation" id="ecdhe-shared-secret-calculation">ECDHE shared secret calculation</a>
 </h1>
-<p id="rfc.section.2.1.p.1">The ECDHE shared secret calculation is performed as described in Section 7.4.2 of <a href="#TLS13" class="xref">[TLS13]</a>.</p>
+<p id="rfc.section.2.1.p.1">The ECDHE shared secret calculation is performed as described in Section 7.4.2 of <a href="#RFC8446" class="xref">[RFC8446]</a>.</p>
 <h1 id="rfc.section.2.2">
 <a href="#rfc.section.2.2">2.2.</a> <a href="#sidh-key-exchange" id="sidh-key-exchange">SIDH Key Exchange</a>
 </h1>
@@ -403,12 +403,14 @@ e_(n-1) * 256^(n-1) + ... + e_1 * 256 + e_0
 <h1 id="rfc.section.2.2.3">
 <a href="#rfc.section.2.2.3">2.2.3.</a> <a href="#shared-secret-calculation" id="shared-secret-calculation">Shared secret calculation</a>
 </h1>
-<p id="rfc.section.2.2.3.p.1">The SIDH shared secret is calculated as described in Section 1.3.6 of <a href="#SIKE" class="xref">[SIKE]</a> using <samp>isoex_l</samp>.  The shared secret is a j-invariant and therefore an element of GF(p^2).  It is converted to octets as described in <a href="#sidh-representation" class="xref">Section 2.2.1</a>.</p>
-<p id="rfc.section.2.2.3.p.2">See <samp>fp2toos</samp> <a href="#SIKE" class="xref">[SIKE]</a> Section 1.2.6 to 1.2.8 for details.  All values are encoded without length prefixes or separators.</p>
+<p id="rfc.section.2.2.3.p.1">The SIDH shared secret is calculated as described in Section 1.3.6 of <a href="#SIKE" class="xref">[SIKE]</a> using <samp>isoex_l</samp>.</p>
+<p id="rfc.section.2.2.3.p.2">Calculating SIDH shared secret requires each side to use isogenies of different degree. This document assumes parameterizations as described in <a href="#SIKE" class="xref">[SIKE]</a>, which is based on 4- and 3-power degree isogenies.  In order to calculate the shared secret, the client always generates an ephemeral key pair based on 4-power degree isogenies. Accordingly, the server always generates an ephemeral key pair based on 3-power degree isogenies.</p>
+<p id="rfc.section.2.2.3.p.3">The shared secret is a j-invariant and therefore an element of GF(p^2).  It is converted to octets as described in <a href="#sidh-representation" class="xref">Section 2.2.1</a>.</p>
+<p id="rfc.section.2.2.3.p.4">See <samp>fp2toos</samp> <a href="#SIKE" class="xref">[SIKE]</a> Section 1.2.6 to 1.2.8 for details.  All values are encoded without length prefixes or separators.</p>
 <h1 id="rfc.section.3">
 <a href="#rfc.section.3">3.</a> <a href="#negotiated-groups" id="negotiated-groups">Negotiated Groups</a>
 </h1>
-<p id="rfc.section.3.p.1">This document extends the enum of NamedGroups to use in the <samp>supported_groups</samp> extension from TLS 1.3 <a href="#TLS13" class="xref">[TLS13]</a> Section 4.2.7.  The new codepoint for the &#8220;Supported Groups Registry&#8221; is:</p>
+<p id="rfc.section.3.p.1">This document extends the enum of NamedGroups to use in the <samp>supported_groups</samp> extension from TLS 1.3 <a href="#RFC8446" class="xref">[RFC8446]</a> Section 4.2.7.  The new codepoint for the &#8220;Supported Groups Registry&#8221; is:</p>
 <pre>
 enum {
     ...,
@@ -418,8 +420,8 @@ enum {
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#key-parameters" id="key-parameters">ECDHE-SIDH key exchange parameters</a>
 </h1>
-<p id="rfc.section.4.p.1">This document defines ECDHE-SIDH parameters to use in the <samp>key_share</samp> extension from TLS 1.3 (see Section 4.2.8 of <a href="#TLS13" class="xref">[TLS13]</a>).</p>
-<p id="rfc.section.4.p.2">ECDHE parameters for both clients and servers are encoded in the <samp>key_exchange</samp> field of a KeyShareEntry as described in Section 4.2.8 of <a href="#TLS13" class="xref">[TLS13]</a> and <a href="#RFC7748" class="xref">[RFC7748]</a>.  SIDH parameters are appended to this value.</p>
+<p id="rfc.section.4.p.1">This document defines ECDHE-SIDH parameters to use in the <samp>key_share</samp> extension from TLS 1.3 (see Section 4.2.8 of <a href="#RFC8446" class="xref">[RFC8446]</a>).</p>
+<p id="rfc.section.4.p.2">ECDHE parameters for both clients and servers are encoded in the <samp>key_exchange</samp> field of a KeyShareEntry as described in Section 4.2.8 of <a href="#RFC8446" class="xref">[RFC8446]</a> and <a href="#RFC7748" class="xref">[RFC7748]</a>.  SIDH parameters are appended to this value.</p>
 <p id="rfc.section.4.p.3">In particular, the contents are the serialised value of the following struct:</p>
 <pre>
    struct {
@@ -492,9 +494,19 @@ enum {
 <a>Leiba, B.</a>, "<a href="https://tools.ietf.org/html/rfc8174">Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words</a>", BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017.</td>
 </tr>
 <tr>
-<td class="reference"><b id="TLS13">[TLS13]</b></td>
+<td class="reference"><b id="RFC8446">[RFC8446]</b></td>
 <td class="top">
-<a>Rescorla, E.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-tls-tls13-28">The Transport Layer Security (TLS) Protocol Version 1.3</a>", Internet-Draft draft-ietf-tls-tls13-28, March 2018.</td>
+<a>Rescorla, E.</a>, "<a href="https://tools.ietf.org/html/rfc8446">The Transport Layer Security (TLS) Protocol Version 1.3</a>", RFC 8446, DOI 10.17487/RFC8446, August 2018.</td>
+</tr>
+<tr>
+<td class="reference"><b id="SIDH">[SIDH]</b></td>
+<td class="top">
+<a>Jao, D.</a> and <a>L. De Feo</a>, "<a href="https://eprint.iacr.org/2011/506.pdf">Towards quantum-resistant cryptosystems from supersingular elliptic curve isogenie</a>", PQCrypto-2011 , 2011.</td>
+</tr>
+<tr>
+<td class="reference"><b id="SIKE">[SIKE]</b></td>
+<td class="top">
+<a>Azarderakhsh, R.</a>, <a>Campagna, M.</a>, <a>Costello, C.</a>, <a>De Feo, L.</a>, <a>Hess, B.</a>, <a>Jalali, A.</a>, <a>Jao, D.</a>, <a>Koziel, B.</a>, <a>LaMacchia, B.</a>, <a>Longa, P.</a>, <a>Naehrig, M.</a>, <a>Renes, J.</a>, <a>Soukharev, V.</a> and <a>D. Urbanik</a>, "<a href="http://sike.org/files/SIDH-spec.pdf">Supersingular Isogeny Key Encapsulation</a>", Submission to the NIST Post-Quantum Standardization project , 2017.</td>
 </tr>
 </tbody></table>
 <h1 id="rfc.references.2">
@@ -519,16 +531,6 @@ enum {
 <td class="reference"><b id="RNSL">[RNSL]</b></td>
 <td class="top">
 <a>Roetteler, M.</a>, <a>Naehrig, M.</a>, <a>Svore, K.</a> and <a>K. Lauter</a>, "<a href="https://arxiv.org/pdf/1706.06752.pdf">Quantum Resource Estimates for Computing Elliptic Curve Discrete Logarithms</a>", arXiv , 2017.</td>
-</tr>
-<tr>
-<td class="reference"><b id="SIDH">[SIDH]</b></td>
-<td class="top">
-<a>Jao, D.</a> and <a>L. De Feo</a>, "<a href="https://eprint.iacr.org/2011/506.pdf">Towards quantum-resistant cryptosystems from supersingular elliptic curve isogenie</a>", PQCrypto-2011 , 2011.</td>
-</tr>
-<tr>
-<td class="reference"><b id="SIKE">[SIKE]</b></td>
-<td class="top">
-<a>Azarderakhsh, R.</a>, <a>Campagna, M.</a>, <a>Costello, C.</a>, <a>De Feo, L.</a>, <a>Hess, B.</a>, <a>Jalali, A.</a>, <a>Jao, D.</a>, <a>Koziel, B.</a>, <a>LaMacchia, B.</a>, <a>Longa, P.</a>, <a>Naehrig, M.</a>, <a>Renes, J.</a>, <a>Soukharev, V.</a> and <a>D. Urbanik</a>, "<a href="http://sike.org/files/SIDH-spec.pdf">Supersingular Isogeny Key Encapsulation</a>", Submission to the NIST Post-Quantum Standardization project , 2017.</td>
 </tr>
 <tr>
 <td class="reference"><b id="URBJAO">[URBJAO]</b></td>
