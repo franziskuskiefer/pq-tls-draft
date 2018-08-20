@@ -73,6 +73,7 @@ informative:
 normative:
   RFC7748:
   RFC5869:
+  RFC8446:
   SIDH:
      title: "Towards quantum-resistant cryptosystems from supersingular elliptic curve
 isogenie"
@@ -120,7 +121,7 @@ Because there's not enough confidence in the security of SIDH yet it should only
 be used in combination with a classical key-exchange scheme.
 
 This document defines a way to combine {{eSIDH}} with the ECDHE key exchanges
-defined in {{RFC7748}} for the TLS 1.3 {{!TLS13=I-D.ietf-tls-tls13}}
+defined in {{RFC7748}} for the TLS 1.3 {{!RFC8446}}
 key-exchange.
 
 `x25519` is combined with `sidh503` and `x448` is combined with `sidh751`.
@@ -162,7 +163,7 @@ secrets.
 
 ## ECDHE shared secret calculation
 
-The ECDHE shared secret calculation is performed as described in Section 7.4.2 of {{TLS13}}.
+The ECDHE shared secret calculation is performed as described in Section 7.4.2 of {{RFC8446}}.
 
 ## SIDH Key Exchange
 
@@ -219,7 +220,7 @@ All values are encoded without length prefixes or separators.
 # Negotiated Groups
 
 This document extends the enum of NamedGroups to use in the `supported_groups`
-extension from TLS 1.3 {{TLS13}} Section 4.2.7.
+extension from TLS 1.3 {{RFC8446}} Section 4.2.7.
 The new codepoint for the "Supported Groups Registry" is:
 
     enum {
@@ -231,10 +232,10 @@ The new codepoint for the "Supported Groups Registry" is:
 # ECDHE-SIDH key exchange parameters {#key-parameters}
 
 This document defines ECDHE-SIDH parameters to use in the `key_share` extension
-from TLS 1.3 (see Section 4.2.8 of {{TLS13}}).
+from TLS 1.3 (see Section 4.2.8 of {{RFC8446}}).
 
 ECDHE parameters for both clients and servers are encoded in the `key_exchange`
-field of a KeyShareEntry as described in Section 4.2.8 of {{TLS13}} and
+field of a KeyShareEntry as described in Section 4.2.8 of {{RFC8446}} and
 {{RFC7748}}.  SIDH parameters are appended to this value.
 
 In particular, the contents are the serialised value of the following struct:
