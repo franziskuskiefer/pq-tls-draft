@@ -291,10 +291,7 @@ considered secure only if used for ephemeral keys. A more detailed
 discussion can be found in {{URBJAO}}.
 
 Security against side-channel attacks is described in {{SIKE}}.
-Side-channel attacks are an active research area that still sees
-significant, new results.  Implementors are advised to follow this
-research closely. As a general advice, implementors are encouraged to use
-a constant-time implementation of the functions.
+Implementors are encouraged to use a constant-time implementation.
 
 The security of the described key exchange relies on the security, in
 particular the collision resistance, of the used key-derivation function.
