@@ -290,7 +290,8 @@ However, using this transform is impractical and thus SIDH can be
 considered secure only if used for ephemeral keys. A more detailed
 discussion can be found in {{URBJAO}}.
 
-Security against side-channel attacks is described in {{SIKE}}.
+Security against side-channel attacks is described in {{SIKE}}. Implementers
+are encouraged to use a constant-time implementation.
 
 The security of the described key exchange relies on the security, in
 particular the collision resistance, of the used key-derivation function.
