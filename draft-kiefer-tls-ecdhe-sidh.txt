@@ -5,8 +5,8 @@
 Network Working Group                                          F. Kiefer
 Internet-Draft                                                   Mozilla
 Intended status: Experimental                             K. Kwiatkowski
-Expires: April 1, 2019                                        Cloudflare
-                                                      September 28, 2018
+Expires: April 25, 2019                                       Cloudflare
+                                                        October 22, 2018
 
 
                  Hybrid ECDHE-SIDH Key Exchange for TLS
@@ -34,7 +34,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 1, 2019.
+   This Internet-Draft will expire on April 25, 2019.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Kiefer & Kwiatkowski      Expires April 1, 2019                 [Page 1]
+Kiefer & Kwiatkowski     Expires April 25, 2019                 [Page 1]
 
-Internet-Draft           ECDHE-SIDH Key Exchange          September 2018
+Internet-Draft           ECDHE-SIDH Key Exchange            October 2018
 
 
 1.  Introduction
@@ -109,9 +109,9 @@ Internet-Draft           ECDHE-SIDH Key Exchange          September 2018
 
 
 
-Kiefer & Kwiatkowski      Expires April 1, 2019                 [Page 2]
+Kiefer & Kwiatkowski     Expires April 25, 2019                 [Page 2]
 
-Internet-Draft           ECDHE-SIDH Key Exchange          September 2018
+Internet-Draft           ECDHE-SIDH Key Exchange            October 2018
 
 
    The HKDF-Extract step used by TLS is relied on to combine entropy
@@ -165,9 +165,9 @@ Internet-Draft           ECDHE-SIDH Key Exchange          September 2018
 
 
 
-Kiefer & Kwiatkowski      Expires April 1, 2019                 [Page 3]
+Kiefer & Kwiatkowski     Expires April 25, 2019                 [Page 3]
 
-Internet-Draft           ECDHE-SIDH Key Exchange          September 2018
+Internet-Draft           ECDHE-SIDH Key Exchange            October 2018
 
 
    described in [SIKE], which is based on 4- and 3-power degree
@@ -221,9 +221,9 @@ Internet-Draft           ECDHE-SIDH Key Exchange          September 2018
 
 
 
-Kiefer & Kwiatkowski      Expires April 1, 2019                 [Page 4]
+Kiefer & Kwiatkowski     Expires April 25, 2019                 [Page 4]
 
-Internet-Draft           ECDHE-SIDH Key Exchange          September 2018
+Internet-Draft           ECDHE-SIDH Key Exchange            October 2018
 
 
    values as described in Section 2.2.2.  All values in the struct are
@@ -269,6 +269,7 @@ Internet-Draft           ECDHE-SIDH Key Exchange          September 2018
    A more detailed discussion can be found in [URBJAO].
 
    Security against side-channel attacks is described in [SIKE].
+   Implementers are encouraged to use a constant-time implementation.
 
    The security of the described key exchange relies on the security, in
    particular the collision resistance, of the used key-derivation
@@ -276,10 +277,9 @@ Internet-Draft           ECDHE-SIDH Key Exchange          September 2018
 
 
 
-
-Kiefer & Kwiatkowski      Expires April 1, 2019                 [Page 5]
+Kiefer & Kwiatkowski     Expires April 25, 2019                 [Page 5]
 
-Internet-Draft           ECDHE-SIDH Key Exchange          September 2018
+Internet-Draft           ECDHE-SIDH Key Exchange            October 2018
 
 
    function.  It is therefore important that the hash function used in
@@ -333,9 +333,9 @@ Internet-Draft           ECDHE-SIDH Key Exchange          September 2018
 
 
 
-Kiefer & Kwiatkowski      Expires April 1, 2019                 [Page 6]
+Kiefer & Kwiatkowski     Expires April 25, 2019                 [Page 6]
 
-Internet-Draft           ECDHE-SIDH Key Exchange          September 2018
+Internet-Draft           ECDHE-SIDH Key Exchange            October 2018
 
 
    Client Hello:
@@ -389,9 +389,9 @@ Internet-Draft           ECDHE-SIDH Key Exchange          September 2018
 
 
 
-Kiefer & Kwiatkowski      Expires April 1, 2019                 [Page 7]
+Kiefer & Kwiatkowski     Expires April 25, 2019                 [Page 7]
 
-Internet-Draft           ECDHE-SIDH Key Exchange          September 2018
+Internet-Draft           ECDHE-SIDH Key Exchange            October 2018
 
 
    Public Key (X25519||SIDH) [Len: 410 (32+378)]
@@ -445,9 +445,9 @@ Internet-Draft           ECDHE-SIDH Key Exchange          September 2018
 
 
 
-Kiefer & Kwiatkowski      Expires April 1, 2019                 [Page 8]
+Kiefer & Kwiatkowski     Expires April 25, 2019                 [Page 8]
 
-Internet-Draft           ECDHE-SIDH Key Exchange          September 2018
+Internet-Draft           ECDHE-SIDH Key Exchange            October 2018
 
 
    PRK [Len: 32]
@@ -501,9 +501,9 @@ Internet-Draft           ECDHE-SIDH Key Exchange          September 2018
 
 
 
-Kiefer & Kwiatkowski      Expires April 1, 2019                 [Page 9]
+Kiefer & Kwiatkowski     Expires April 25, 2019                 [Page 9]
 
-Internet-Draft           ECDHE-SIDH Key Exchange          September 2018
+Internet-Draft           ECDHE-SIDH Key Exchange            October 2018
 
 
        fd d4 09 ba 8a ed d2 9e 78 9c 2f 43 91 5d e7 3a
@@ -557,9 +557,9 @@ Internet-Draft           ECDHE-SIDH Key Exchange          September 2018
 
 
 
-Kiefer & Kwiatkowski      Expires April 1, 2019                [Page 10]
+Kiefer & Kwiatkowski     Expires April 25, 2019                [Page 10]
 
-Internet-Draft           ECDHE-SIDH Key Exchange          September 2018
+Internet-Draft           ECDHE-SIDH Key Exchange            October 2018
 
 
        69 8a db 8d 39 79 13 49 9f 03 21 7a 2f 5f ef df
@@ -613,9 +613,9 @@ Internet-Draft           ECDHE-SIDH Key Exchange          September 2018
 
 
 
-Kiefer & Kwiatkowski      Expires April 1, 2019                [Page 11]
+Kiefer & Kwiatkowski     Expires April 25, 2019                [Page 11]
 
-Internet-Draft           ECDHE-SIDH Key Exchange          September 2018
+Internet-Draft           ECDHE-SIDH Key Exchange            October 2018
 
 
    [RFC5869]  Krawczyk, H. and P. Eronen, "HMAC-based Extract-and-Expand
@@ -669,9 +669,9 @@ Internet-Draft           ECDHE-SIDH Key Exchange          September 2018
 
 
 
-Kiefer & Kwiatkowski      Expires April 1, 2019                [Page 12]
+Kiefer & Kwiatkowski     Expires April 25, 2019                [Page 12]
 
-Internet-Draft           ECDHE-SIDH Key Exchange          September 2018
+Internet-Draft           ECDHE-SIDH Key Exchange            October 2018
 
 
    [RNSL]     Roetteler, M., Naehrig, M., Svore, K., and K. Lauter,
@@ -725,4 +725,4 @@ Authors' Addresses
 
 
 
-Kiefer & Kwiatkowski      Expires April 1, 2019                [Page 13]
+Kiefer & Kwiatkowski     Expires April 25, 2019                [Page 13]

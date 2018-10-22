@@ -304,7 +304,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Kiefer, F. and K. Kwiatkowski" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-kiefer-tls-ecdhe-sidh-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-09-28" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-10-22" />
   <meta name="dct.abstract" content="This draft specifies a TLS key exchange that combines the post-quantum key exchange, Supersingular elliptic curve isogenie diffie-hellman (SIDH), with elliptic curve Diffie-Hellman (ECDHE) key exchange." />
   <meta name="description" content="This draft specifies a TLS key exchange that combines the post-quantum key exchange, Supersingular elliptic curve isogenie diffie-hellman (SIDH), with elliptic curve Diffie-Hellman (ECDHE) key exchange." />
 
@@ -328,12 +328,12 @@ ul.toc li {
 <td class="right">K. Kwiatkowski</td>
 </tr>
 <tr>
-<td class="left">Expires: April 1, 2019</td>
+<td class="left">Expires: April 25, 2019</td>
 <td class="right">Cloudflare</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">September 28, 2018</td>
+<td class="right">October 22, 2018</td>
 </tr>
 
     	
@@ -349,7 +349,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on April 1, 2019.</p>
+<p>This Internet-Draft will expire on April 25, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -464,7 +464,7 @@ enum {
 </tbody>
 </table>
 <p id="rfc.section.5.p.3">As described in <a href="#ISOSEC" class="xref">[ISOSEC]</a> it is possible to perform active attacks on static-static or non-interactive variants of the SIDH scheme. The countermeasure for this attack was described in <a href="#KLM15" class="xref">[KLM15]</a>. Research proposes so-called &#8220;indirect key validation&#8221;, using Fujisaki-Okamoto type transform.  However, using this transform is impractical and thus SIDH can be considered secure only if used for ephemeral keys. A more detailed discussion can be found in <a href="#URBJAO" class="xref">[URBJAO]</a>.</p>
-<p id="rfc.section.5.p.4">Security against side-channel attacks is described in <a href="#SIKE" class="xref">[SIKE]</a>.</p>
+<p id="rfc.section.5.p.4">Security against side-channel attacks is described in <a href="#SIKE" class="xref">[SIKE]</a>. Implementers are encouraged to use a constant-time implementation.</p>
 <p id="rfc.section.5.p.5">The security of the described key exchange relies on the security, in particular the collision resistance, of the used key-derivation function.  TLS 1.3 uses HKDF <a href="#RFC5869" class="xref">[RFC5869]</a> as its key-derivation function.  It is therefore important that the hash function used in HKDF is collision-resistant.</p>
 <h1 id="rfc.section.6">
 <a href="#rfc.section.6">6.</a> <a href="#test-vectors" id="test-vectors">Test vectors</a>
