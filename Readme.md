@@ -1,6 +1,6 @@
 #
 
-This is the working area for the individual Internet-Draft, "Post-Quantum key-exchange in TLS".
+This is the working area for the individual Internet-Draft, "Hybrid ECDHE-SIDH Key Exchange for TLS".
 
 [![Join the chat at https://gitter.im/hybrid-ecdhe-sidh-tls](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/hybrid-ecdhe-sidh-tls/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
