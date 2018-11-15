@@ -225,7 +225,7 @@ The new codepoint for the "Supported Groups Registry" is:
 
     enum {
         ...,
-        x25519sidh503(0x0105), x448sidh751(0x0106),
+        x25519sidh503(0xFE00), x448sidh751(0xFE01),
     } NamedGroup;
 
 
