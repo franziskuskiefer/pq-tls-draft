@@ -228,6 +228,9 @@ The new codepoint for the "Supported Groups Registry" is:
         x25519sidh503(0xFE30), x448sidh751(0xFE31),
     } NamedGroup;
 
+If TLS 1.2 or earlier is negotiated, the server MUST ignore this group when
+advertised by the client.
+
 
 # ECDHE-SIDH key exchange parameters {#key-parameters}
 
